@@ -1,0 +1,7 @@
+body {
+    background: orange url("images/logo.png") no-repeat right bottom;
+}
+
+li a {
+    color: green;
+}

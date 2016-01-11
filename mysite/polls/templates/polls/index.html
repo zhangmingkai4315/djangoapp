@@ -1,3 +1,7 @@
+{% load staticfiles %}
+<link rel="stylesheet" href="{% static 'polls/style.css' %}" media="screen" title="no title" charset="utf-8"/>
+
+
 
 {% if latest_question_list %}
 	<ul>
@@ -8,4 +12,3 @@
 {% else %}
 	<p>No polls are available now.</p>
 {% endif %}
-
