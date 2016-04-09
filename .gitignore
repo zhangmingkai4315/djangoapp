@@ -4,6 +4,9 @@ __pycache__/
 
 # C extensions
 *.so
+bin/
+python2.7
+pip-selfcheck.json
 
 # Distribution / packaging
 .Python
