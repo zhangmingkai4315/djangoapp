@@ -5,8 +5,8 @@ import random,datetime
 from django.http import HttpResponse,HttpResponseRedirect,HttpResponseNotFound
 from django.utils import timezone
 from django.views.decorators.http import require_http_methods
-
-from .forms import UploadFileForm,LoginForm
+from django.forms import formset_factory
+from .forms import UploadFileForm,LoginForm,NameForm,ArticleForm
 def handle_uploaded_file(f):
     print f
     # change the save path
@@ -75,3 +75,17 @@ def logout(request):
     except Exception, e:
         pass
     return redirect('articles:login')
+
+def formlist(request):
+    nameForm=NameForm()
+    if request.method == 'POST':
+        form=NameForm(request.POST)
+        if form.is_valid():
+            subject=form.cleaned_data['subject']
+            message=form.cleaned_data['message']
+            return HttpResponse('form is right')
+        else:
+            return render(request,'form.html',{'form':form})
+    ArticleFormSet = formset_factory(ArticleForm, can_order=True)
+    formSet=ArticleFormSet(initial=[{'title':'Art1','pub_date': datetime.date(2008, 5, 10)},{'title':'Art1','pub_date': datetime.date(2008, 1, 10)}])
+    return render(request,'form.html',{'form':nameForm,'article':formSet})

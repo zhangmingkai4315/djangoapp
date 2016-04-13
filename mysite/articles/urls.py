@@ -14,5 +14,6 @@ urlpatterns = [
     url(r'^post-comment$',views.post_comment,name='post_comment'),
     url(r'^login$',views.login,name='login'),
     url(r'^logout$',views.logout,name='logout'),
+    url(r'^form$',views.formlist,name='form'),
     # url(r'^')
 ]
