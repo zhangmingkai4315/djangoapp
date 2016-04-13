@@ -5,8 +5,12 @@ __pycache__/
 # C extensions
 *.so
 bin/
+
 include/
 local
+python2.7
+pip-selfcheck.json
+
 # Distribution / packaging
 .Python
 env/
