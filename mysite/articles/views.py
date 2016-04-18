@@ -153,6 +153,11 @@ class PublisherDetail(DetailView):
 class BookList(ListView):
     queryset=Book.objects.order_by('-publication_date')
     context_object_name='book_list'
+    def head(self,*args,**kwargs):
+        last_book=self.get_queryset().lastest('publication_date')
+        response=HttpResponse('')
+        response['Last-Modified']=last_book.publication_date.strftime('%a, %d %b %Y %H:%M:%S GMT')
+        return response
 
 class AcmeBookList(ListView):
     queryset=Book.objects.filter(publisher__name='Acme Publishing')
@@ -164,3 +169,14 @@ class PublisherBookList(ListView):
     def get_queryset(self):
         self.publisher=get_object_or_404(Publisher,name=self.args[0])
         return Book.objects.filter(publisher=self.publisher)
+
+
+from .forms import ContactForm
+from django.views.generic.edit import FormView
+
+class ContactView(FormView):
+    template_name='contact.html'
+    form_class=ContactForm
+    def form_valid(self,form):
+        form.send_email()
+        return super(ContactView,self).form_valid(form)

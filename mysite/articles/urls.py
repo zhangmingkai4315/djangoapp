@@ -1,10 +1,8 @@
 from django.conf.urls import url
 from . import views
-from .views import MyView,GreetingView,MyFormView,PublisherList,PublisherBookList
+from .views import MyView,GreetingView,MyFormView,PublisherList,PublisherBookList,ContactView
 # print('include polls-url')
 app_name = 'articles'
-
-
 urlpatterns = [
     url(r'^$',views.root,name='root'),
     url(r'^(?P<year>[0-9]+)/$',views.special_year,name='year'),
@@ -21,10 +19,7 @@ urlpatterns = [
     url(r'^view-example$',views.my_view,name='view-example'),
     url(r'^view-example-class$',MyView.as_view(),name='view-example-class'),
     url(r'^view-example-class-greeting-day$',GreetingView.as_view(greeting='hello'),name='view-example-class-greeting-day'),
-    # url(r'^')
-
     url(r'^publishers/$',PublisherList.as_view()),
-
     url(r'^books/([\w-]+)/$', PublisherBookList.as_view()),
-
+    url(r'^contact/$', ContactView.as_view())
 ]

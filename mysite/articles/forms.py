@@ -18,3 +18,9 @@ class ArticleForm(forms.Form):
     title=forms.CharField(max_length=100)
     pub_date=forms.DateField()
 
+class ContactForm(forms.Form):
+    name=forms.CharField(max_length=100)
+    message=forms.CharField(widget=forms.Textarea)
+
+    def send_email(self):
+        pass
