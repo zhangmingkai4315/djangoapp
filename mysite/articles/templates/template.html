@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block title %}My amazing template{% endblock %}
+My First Name is {{firstName}}, My Last name is {{lastName}}
+
+{% block content %}
+{% if firstName %}
+    <pre>I have a firstName</pre>
+{% else %}
+    <pre>I don't have a firstName</pre>
+{% endif %}
+
+<p>{{describe|title}}</p>
+
+Today is : {{date|date:'Y-m-d'}}
+<hr>
+{# this will not render#}
+
+<table>
+{% for o in some_list %}
+    <tr class="{% cycle 'row1' 'row2' %}">{{o}}</tr>
+{% endfor%}
+</table>
+
+{% endblock%}

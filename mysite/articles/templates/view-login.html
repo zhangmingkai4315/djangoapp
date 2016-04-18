@@ -1,0 +1,6 @@
+<form action="{% url 'articles:view-login'%}" method="post">
+{% csrf_token %}
+{{form}}
+<input type="submit" value="login" />
+{{info}}
+</form>

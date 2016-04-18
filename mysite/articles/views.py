@@ -40,7 +40,7 @@ def upload_file(request):
         print form.is_valid()
         if form.is_valid():
             handle_uploaded_file(request.FILES['file'])
-            return HttpResponseRedirect(reverse('articles:root'))
+            return Htmy_viewtpResponseRedirect(reverse('articles:root'))
     else:
         form=UploadFileForm()
     return render(request,'upload.html',{'form':form})
@@ -89,3 +89,78 @@ def formlist(request):
     ArticleFormSet = formset_factory(ArticleForm, can_order=True)
     formSet=ArticleFormSet(initial=[{'title':'Art1','pub_date': datetime.date(2008, 5, 10)},{'title':'Art1','pub_date': datetime.date(2008, 1, 10)}])
     return render(request,'form.html',{'form':nameForm,'article':formSet})
+
+
+def showTemplate(request):
+    content={
+    "firstName":"Mike",
+    "lastName":"Zhang",
+    "date":datetime.datetime.now(),
+    "describe":"my favor sport game is football",
+    "some_list":[
+    "hello","world","my","name","is","mike"
+    ]
+    }
+    return render(request,'template.html',content)
+
+
+def my_view(request):
+    if request.method=='GET':
+        return HttpResponse('Result')
+
+from django.views.generic import View
+class MyView(View):
+    def get(self,request):
+        return HttpResponse('Result from class ')
+
+class GreetingView(View):
+    greeting='Good day'
+    def get(self,request):
+        return HttpResponse(self.greeting)
+
+
+class MyFormView(View):
+    form_class=LoginForm
+    initial={'info':'please login first'}
+    template_name='view-login.html'
+
+    def get(self,request,*args,**kwargs):
+        form=self.form_class(initial=self.initial)
+        return render(request,self.template_name,{'form':form})
+    def post(self,request,*args,**kwargs):
+        form=self.form_class(request.POST)
+        if form.is_valid():
+            return HttpResponseRedirect(reverse('articles:root'))
+        return render(request,self.template_name,{'form':form})
+
+
+from django.views.generic import ListView,DetailView
+from .models import Publisher,Book
+
+class PublisherList(ListView):
+    model=Publisher
+    template_name='publisher_list.html'
+
+class PublisherDetail(DetailView):
+    model=Publisher
+    def get_context_data(self,**kwargs):
+        context=super(PublisherDetail,self).get_context_data(**kwargs)
+        context['book_list']=Book.objects.all()
+        return context
+
+
+
+class BookList(ListView):
+    queryset=Book.objects.order_by('-publication_date')
+    context_object_name='book_list'
+
+class AcmeBookList(ListView):
+    queryset=Book.objects.filter(publisher__name='Acme Publishing')
+    template_name='Acme_list.html'
+
+
+class PublisherBookList(ListView):
+    template_name='books/books_by_publisher.html'
+    def get_queryset(self):
+        self.publisher=get_object_or_404(Publisher,name=self.args[0])
+        return Book.objects.filter(publisher=self.publisher)
