@@ -15,9 +15,10 @@ Including another URLconf
 """
 from django.conf.urls import url
 from django.contrib import admin
-from tweets.views import Index
+from tweets.views import Index,Profile
 
 urlpatterns = [
     url(r'^$',Index.as_view(),name='index'),
     url(r'^admin/', admin.site.urls),
+    url(r'^user/(\w+)/$',Profile.as_view()),
 ]

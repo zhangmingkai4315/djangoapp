@@ -6,9 +6,28 @@
 	<title></title>
 </head>
 <body>
+ <nav class="navbar navbar-default navbar-fixed-top"
+   role="navigation">
+   <a class="navbar-brand" href="#">MyTweets</a>
+   <p class="navbar-text navbar-right">User Profile Page</p>
+ </nav>
+
+<div class="container">
+<h1><br/></h1>
 {% block content %}
+
 <h1 class='text-info'>Hello {{name}}</h1>
 {% endblock %}
+
+</div>
+
+<nav class="navbar navbar-default navbar-fixed-bottom"
+role="navigation">
+<p class="navbar-text navbar-right">Footer </p>
+</nav>
+
+
+<script type="text/javascript" src="{%static 'js/jquery-2.1.2.js'%}"></script>
 <script type="text/javascript" src="{%static 'bootstrap/js/bootstrap.min.js'%}"></script>
 </body>
 </html>
