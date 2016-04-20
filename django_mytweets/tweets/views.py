@@ -41,9 +41,29 @@ class Profile(View):
 		params['search']=search_form
 		tweets=Tweet.objects.filter(user=userProfile).order_by('-created_date')
 		params['tweets']=tweets
-		params['user']=user
+		params['profile']=userProfile
 		return render(request,'profile.html',params)
 
+
+from django.contrib.auth import authenticate, login, logout
+class Login(View):
+	def post(self,request):
+	    username = request.POST['username']
+	    password = request.POST['password']
+	    print username,password
+	    user = authenticate(username=username, password=password)
+	    if user is not None:
+	    	login(request, user)
+	    	return redirect('/profile')
+	    else:
+	        return redirect('/login')
+	def get(self,request):
+		return render(request,'registration/login.html')
+
+class Logout(View):
+	def get(self,request):
+		logout(request)
+		return redirect('/login')
 
 # class PostTweet(View):
 # 	def post(self,request,username):

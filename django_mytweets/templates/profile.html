@@ -6,18 +6,16 @@
 			{{profile.username}}'s Profile Page
 		</span>
 
-		{% if profile.username!=user.username %}
-		    <span class="btn btn-xs btn-default follow-btn" title="Click to follow {{ profile.username }}">
-			 <input id="follow" type="hidden" name="follow" value="{{ profile.username }}">
-
-			 <span class="glyphicon glyphicon-plus"> </span> {% if
-       following %} Unfollow {% else %} Follow {% endif %}</span>
-
+		{% if profile.username != user.username %}
+              <span class="btn btn-xs btn-default follow-btn" title="Click to follow {{ profile.username }}" value="{{ following }}" username="{{ profile.username }}">
+             <span class="glyphicon glyphicon-plus"></span><span class="follow-text">
+                 {{ following|yesno:"Unfollow,Follow" }} 
+                 </span></span>
 		{% endif %}
 	</p>
 	<p class="navbar-text navbar-right">
 		<span class='glyphicon glyphicon-user'>
-			{{user.username}}'s Profile Page
+			{{user.username}}
 		</span>
 	</p>
 {% endblock%}

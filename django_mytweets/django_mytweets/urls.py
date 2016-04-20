@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.conf.urls import url
 from django.contrib import admin
-from tweets.views import Index,Profile,PostTweet,Search,UserRedirect
+from tweets.views import Index,Profile,PostTweet,Search,UserRedirect,Logout,Login
 
 urlpatterns = [
     url(r'^$',Index.as_view(),name='index'),
@@ -23,7 +23,7 @@ urlpatterns = [
     url(r'^user/(\w+)/$',Profile.as_view()),
     url(r'^user/(\w+)/post/$',PostTweet.as_view()),
     url(r'^search/$',Search.as_view()),
-    url(r'^login/$',"django.contrib.auth.views.login"),
-    url(r'^logout/$',"django.contrib.auth.views.logout"),
+    url(r'^login/$',Login.as_view()),
+    url(r'^logout/$',Logout.as_view()),
     url(r'^profile/$',UserRedirect.as_view()),
 ]
