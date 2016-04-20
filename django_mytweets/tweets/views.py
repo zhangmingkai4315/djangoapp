@@ -17,7 +17,7 @@ import json
 # 		return HttpResponse('I am called from a get request')
 # 	elif request.method == 'POST':
 # 		return HttpResponse('I am called from a post request')
-
+from django.core.paginator import Paginator,PageNotAnInteger, EmptyPage
 
 class Index(View):
 	def get(self,request):
@@ -40,6 +40,17 @@ class Profile(View):
 		search_form=SearchForm()
 		params['search']=search_form
 		tweets=Tweet.objects.filter(user=userProfile).order_by('-created_date')
+		paginator=Paginator(tweets,2)
+		page=request.GET.get('page')
+
+		try:
+			tweets=paginator.page(page)
+
+		except PageNotAnInteger:
+			tweets=paginator.page(1)
+		except EmptyPage:
+			tweets=paginator.page(paginator.num_pages)
+
 		params['tweets']=tweets
 		params['profile']=userProfile
 		return render(request,'profile.html',params)
