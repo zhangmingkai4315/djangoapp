@@ -33,3 +33,12 @@ class UserFollowers(models.Model):
 	followers=models.ManyToManyField(User,related_name='followers')
 	def __str__(self):
 		return '%s, %s' % (self.user, self.count)
+
+
+class Invitation(models.Model):
+	name = models.CharField(maxlength=50)
+	email = models.EmailField()
+	code = models.CharField(maxlength=20)
+	sender = models.ForeignKey(User)
+	def __unicode__(self):
+	   return u'%s, %s' % (self.sender.username, self.email)

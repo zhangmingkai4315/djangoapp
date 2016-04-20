@@ -139,10 +139,46 @@ class UserRedirect(View):
 
 
 
-
-
-
-
+class Invite(View):
+	def get(self,request):
+		params=dict()
+		success=request.GET.get('success')
+		email=request.GET.get('email')
+		invite=InvitationForm()
+		params['invite']=invite
+		params['success']=email
+		params['email']=email
+		return render(request,'invite.html',params)
+	def post(self,request):
+		form=InvitationForm(request.POST)
+		if form.is_valid():
+			email=form.cleaned_data['email']
+			subject='Invite to join MyTweet app '
+			sender_name = request.user.username
+			sender_name = request.user.email
+			invite_code=Invite.gen_code(email)
+			link = 'http://%s/invite/accept/%s/' % (settings.SITE_HOST,invite_code)
+			context = Context({"sender_name": sender_name,
+         "sender_email": sender_email, "email": email, "link": link})
+			invite_email_template =
+			render_to_string('partials/_invite_email_template.html',context)
+			msg = EmailMultiAlternatives(subject, invite_email_template,
+			settings.EMAIL_HOST_USER, [email],cc=[settings.EMAIL_HOST_USER])
+			user = User.objects.get(username=request.user.username)
+			invitation = Invitation()
+			invitation.email = email
+			invitation.code = invite_code
+			invitation.sender = user
+			invitation.save()
+			success = msg.send()
+			return HttpResponseRedirect('/invite?success='+str(success)+'&email='+email)
+	@staticmethod
+	def gen_code(email):
+		secrect=settings.SECRECT_KEY
+		if isinstance(email,unicode):
+			email=email.encode('utf-8')
+			activation_key=hashlib.sha1(secrect+email).hexdigest()
+			return activation_key
 
 
 
