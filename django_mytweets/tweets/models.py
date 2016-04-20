@@ -13,3 +13,11 @@ class Tweet(models.Model):
 	is_active=models.BooleanField(default=True)
 	def __unicode__(self):
 		return self.text
+
+
+class HashTag(models.Model):
+	name=models.CharField(max_length=64,unique=True)
+	tweet=models.ManyToManyField(Tweet)
+	def __unicode__(self):
+		return self.name
+
