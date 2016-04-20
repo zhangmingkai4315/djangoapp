@@ -5,7 +5,7 @@ from django.http import HttpResponse,HttpResponseRedirect
 
 from django.views.generic import View
 from .models import Tweet,HashTag
-from user_profile.models import User
+from user_profile.models import User,UserFollowers
 
 from .forms import TweetForm,SearchForm
 
@@ -30,11 +30,18 @@ class Index(View):
 class Profile(View):
 	def get(self,request,username):
 		params=dict()
-		user=User.objects.get(username=username)
-		tweets=Tweet.objects.filter(user=user)
+		userProfile=User.objects.get(username=username)
+		userFollower=UserFollowers.objects.get(user=userProfile)
+		if userFollower.followers.filter(username = request.user.username).exists():
+			params['following']=True
+		else:
+			params['following']=False
+		form = TweetForm(initial={'country': 'Global'})
+		search_form=SearchForm()
+		params['search']=search_form
+		tweets=Tweet.objects.filter(user=userProfile).order_by('-created_date')
 		params['tweets']=tweets
 		params['user']=user
-		params['form']=TweetForm()
 		return render(request,'profile.html',params)
 
 
@@ -95,7 +102,9 @@ class Search(View):
 			HttpResponseRedirect('/search')
 
 
-
+class UserRedirect(View):
+	def get(self,request):
+		return HttpResponseRedirect('/user/'+request.user.username)
 
 
 

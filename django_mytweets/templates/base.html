@@ -6,13 +6,21 @@
 	  {% block css %}
        {% endblock %}
 	<title></title>
+	<style type="text/css">
+		.navbar-right{
+			margin-right: 15px;
+		}
+	</style>
 </head>
 <body>
- <nav class="navbar navbar-default navbar-fixed-top"
-   role="navigation">
+
+ <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
    <a class="navbar-brand" href="#">MyTweets</a>
+   {% block navbar %}
    <p class="navbar-text navbar-right">User Profile Page</p>
+   {% endblock%}
  </nav>
+
 
 <div class="container">
 <h1><br/></h1>

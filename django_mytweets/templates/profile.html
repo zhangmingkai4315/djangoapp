@@ -1,4 +1,28 @@
 {% extends "base.html" %}
+
+{% block navbar %}
+	<p class="navbar-text navbar-right">
+		<span class='glyphicon glyphicon-user'>
+			{{profile.username}}'s Profile Page
+		</span>
+
+		{% if profile.username!=user.username %}
+		    <span class="btn btn-xs btn-default follow-btn" title="Click to follow {{ profile.username }}">
+			 <input id="follow" type="hidden" name="follow" value="{{ profile.username }}">
+
+			 <span class="glyphicon glyphicon-plus"> </span> {% if
+       following %} Unfollow {% else %} Follow {% endif %}</span>
+
+		{% endif %}
+	</p>
+	<p class="navbar-text navbar-right">
+		<span class='glyphicon glyphicon-user'>
+			{{user.username}}'s Profile Page
+		</span>
+	</p>
+{% endblock%}
+
+
 {% block content %}
 	
 <div class="row clearfix">
