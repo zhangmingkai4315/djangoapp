@@ -7,10 +7,11 @@ from django.views.generic import View
 from .models import Tweet,HashTag
 from user_profile.models import User
 
-from .forms import TweetForm 
+from .forms import TweetForm,SearchForm
 
-
-
+from  django.template import Context
+from django.template.loader import render_to_string,get_template
+import json
 # def index(request):
 # 	if request.method == 'GET':
 # 		return HttpResponse('I am called from a get request')
@@ -75,6 +76,23 @@ class PostTweet(View):
 			print form
 			return HttpResponseRedirect('/user/'+username)
 
+class Search(View):
+	def get(self,request):
+		form=SearchForm()
+		params=dict()
+		params['search']=form
+		return render(request,'search.html',params)
+	def post(self,request):
+		form=SearchForm(request.POST)
+		if form.is_valid():
+			query=form.cleaned_data['query']
+			tweets=Tweet.objects.filter(text__icontains=query)
+			context=dict({'query':query,'tweets':tweets})
+			template=get_template('partials/_tweet_search.html')
+			return_str=template.render(context)
+			return HttpResponse(json.dumps(return_str),content_type="application/json")
+		else:
+			HttpResponseRedirect('/search')
 
 
 
